@@ -1,0 +1,21 @@
+---
+- hosts: all
+  remote_user: maglev
+  vars:
+    log_loc: /var/log/
+
+  tasks:
+  - name: check appstack status
+    command: magctl appstack status
+    register: result
+  - debug: var=result.stdout_lines
+  
+  - name: check memory
+    command: free -m
+    register: result
+  - debug: var=result.stdout_lines
+
+  - name: check disk
+    command: df -h
+    register: result
+  - debug: var=result.stdout_lines

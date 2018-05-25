@@ -1,0 +1,13 @@
+---
+- hosts: all
+  gather_facts: False
+  remote_user: maglev
+  tasks:
+  - name: run the show db command
+    shell: "magctl service exec postgres \"psql -U apic_em_user -d campus -h localhost -c 'select * from {{ db }};'\" </dev/tty"
+    register: result
+  - debug: var=result.stdout_lines
+
+  - debug:
+       msg: "found 90091"
+    when: result.stdout is search ('90091')
