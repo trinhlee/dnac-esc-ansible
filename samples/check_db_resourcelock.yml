@@ -1,0 +1,16 @@
+---
+- hosts: all
+  remote_user: maglev
+  tasks:
+  - name: deploy check db script
+    copy:
+      src: ./check_db_resourcelock.sh
+      dest: /tmp/check_db_resourcelock.sh
+      owner: maglev
+      group: maglev
+      mode: u=rwx,g=r,o=r
+
+  - name: run the check db script
+    command: /tmp/check_db_resourcelock.sh </dev/tty
+    register: result
+  - debug: var=result.stdout_lines
