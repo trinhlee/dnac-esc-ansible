@@ -1,0 +1,14 @@
+---
+- hosts: all
+  remote_user: maglev
+
+  tasks:
+  - name: check exited containers
+    command: docker ps -q -f status=exited
+    register: result
+  - debug: var=result.stdout_lines
+
+  - name: remove exited containers 
+    command: docker rm "{{ item }}"
+    with_items: "{{ result.stdout_lines }}"
+    
